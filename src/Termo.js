@@ -6,19 +6,12 @@ const Termo = () => {
   const [palavra, setPalavra] = useState([])
   const [palavraDigitada, setPalavraDigitada] = useState([])
   const [palavrasTentativa, setPalavrasTentativa] = useState([])
+  const [vencedor, setVencedor] = useState(false)
+  const [perdedor, setPerdedor] = useState(false)
 
   const palavras = [
     "livro",
     "tigre",
-    "amigo",
-    "corpo",
-    "festa",
-    "porto",
-    "largo",
-    "melao",
-    "manga",
-    "peixe",
-    "terra",
   ]
 
   const sorteiaPalavra = (min, max) => {
@@ -38,8 +31,14 @@ const Termo = () => {
     if (palavraDigitada.length !== 5) {
       alert("Digite uma palavra com 5 caracteres!")
     }
-    else if ((palavra.join("")).includes(palavrasTentativa)){
-      alert("Você ganhou!")
+    else if (palavra.join("").includes(palavraDigitada)) {
+      setPalavraDigitada('')
+      setPalavrasTentativa([...palavrasTentativa, palavraDigitada])
+      setVencedor(true)
+    }
+    else if (palavrasTentativa.length === 5) {
+      setPalavraDigitada('')
+      setPerdedor(true)
     }
     else {
       setPalavraDigitada('')
@@ -71,15 +70,9 @@ const Termo = () => {
 
   const resetarJogo = () => {
     setPalavrasTentativa([])
+    setVencedor(false)
+    setPerdedor(false)
   }
-
-  const ganhou = () => {
-
-  }
-
-  useEffect(() => {
-
-  }, [])
 
   useEffect(() => {
     sorteiaPalavra(0, palavras.length - 1)
@@ -89,9 +82,16 @@ const Termo = () => {
     <section className='termo'>
       <h1 className='titulo_termo'>TERMO</h1>
 
-      {palavrasTentativa.length === 5 && (
+      {perdedor === true && (
         <div>
           <h1 className='titulo_termo'>Você perdeu!</h1>
+          <button onClick={resetarJogo} className='botao_enter'>JOGAR NOVAMENTE</button>
+        </div>
+      )}
+
+      {vencedor === true && (
+        <div>
+          <h1 className='titulo_termo'>Você venceu!</h1>
           <button onClick={resetarJogo} className='botao_enter'>JOGAR NOVAMENTE</button>
         </div>
       )}
@@ -108,11 +108,14 @@ const Termo = () => {
         )
       })}
 
-      <form onSubmit={testarPalavra}>
-        <input onChange={digitaPalavra} value={palavraDigitada} onDrop="return false" className='input_palavra' maxLength="5" type="text" />
-        <button className='botao_enter'>ENTER</button>
-      </form>
-
+      {vencedor || perdedor ? (
+        <></>
+      ) : (
+        <form onSubmit={testarPalavra}>
+          <input onChange={digitaPalavra} value={palavraDigitada} onDrop="return false" className='input_palavra' maxLength="5" type="text" />
+          <button className='botao_enter'>ENTER</button>
+        </form>
+      )}
     </section>
   )
 }
