@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { palavras } from './palavras';
 import './Termo.css';
 
 const Termo = () => {
@@ -8,11 +9,6 @@ const Termo = () => {
   const [palavrasTentativa, setPalavrasTentativa] = useState([])
   const [vencedor, setVencedor] = useState(false)
   const [perdedor, setPerdedor] = useState(false)
-
-  const palavras = [
-    "livro",
-    "tigre",
-  ]
 
   const sorteiaPalavra = (min, max) => {
     const numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min
@@ -29,7 +25,7 @@ const Termo = () => {
   const testarPalavra = (e) => {
     e.preventDefault()
     if (palavraDigitada.length !== 5) {
-      alert("Digite uma palavra com 5 caracteres!")
+      console.log("")
     }
     else if (palavra.join("").includes(palavraDigitada)) {
       setPalavraDigitada('')
