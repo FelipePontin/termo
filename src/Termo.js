@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { palavras } from './palavras';
+import { palavras }  from './palavras';
 
-import Aos from 'aos';
-import 'aos/dist/aos.css';
+import Aos from 'aos'
+import 'aos/dist/aos.css'
 
-import confetti from 'https://cdn.skypack.dev/canvas-confetti'
+import { confetti } from 'canvas-confetti'
 
-import './Termo.css';
+import './Termo.css'
 
 const Termo = () => {
 
