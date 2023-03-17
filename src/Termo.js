@@ -27,7 +27,7 @@ const Termo = () => {
   }
 
   const digitaPalavra = (e) => {
-    const palavraDigitadaSeparada = (e.target.value).trim()
+    const palavraDigitadaSeparada = ((e.target.value).trim()).toLowerCase()
     setPalavraDigitada(palavraDigitadaSeparada)
   }
 
