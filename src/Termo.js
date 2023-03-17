@@ -4,7 +4,7 @@ import { palavras }  from './palavras';
 import Aos from 'aos'
 import 'aos/dist/aos.css'
 
-import { confetti } from 'canvas-confetti'
+import confetti from 'canvas-confetti'
 
 import './Termo.css'
 
