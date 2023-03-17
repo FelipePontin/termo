@@ -27,6 +27,7 @@ body {
   position: relative;
   background-color: transparent;
   border: .3rem solid #4C4347;
+  border-bottom: -.5rem solid #4C4347;
   margin: .25rem .25rem;
   font-weight: 600;
   color: #FAFAFF;
@@ -104,4 +105,15 @@ body {
   cursor: pointer;
   border: none;
   color: #FAFAFF;
+}
+
+.texto_palavra_revelada {
+  color: #FAFAFF;
+  text-align: center;
+  margin: -1.5rem 0 0 0;
+}
+
+.palavra_revelada {
+  font-weight: 600;
+  font-size: 1.45rem;
 }

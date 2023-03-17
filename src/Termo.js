@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { palavras } from './palavras';
+
+import confetti from 'https://cdn.skypack.dev/canvas-confetti'
+
 import './Termo.css';
 
 const Termo = () => {
@@ -10,10 +13,13 @@ const Termo = () => {
   const [vencedor, setVencedor] = useState(false)
   const [perdedor, setPerdedor] = useState(false)
 
+  const inputPalavra = useRef()
+
   const sorteiaPalavra = (min, max) => {
     const numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min
     const palavraSorteada = palavras[numeroAleatorio]
-    const palavraSeparada = palavraSorteada.split("")
+    const retiraAcento = palavraSorteada.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    const palavraSeparada = retiraAcento.split("")
     setPalavra(palavraSeparada)
   }
 
@@ -24,6 +30,7 @@ const Termo = () => {
 
   const testarPalavra = (e) => {
     e.preventDefault()
+    inputPalavra.current.focus()
     if (palavraDigitada.length !== 5) {
       console.log("")
     }
@@ -31,6 +38,7 @@ const Termo = () => {
       setPalavraDigitada('')
       setPalavrasTentativa([...palavrasTentativa, palavraDigitada])
       setVencedor(true)
+      confetti()
     }
     else if (palavrasTentativa.length === 5) {
       setPalavraDigitada('')
@@ -68,6 +76,7 @@ const Termo = () => {
     setPalavrasTentativa([])
     setVencedor(false)
     setPerdedor(false)
+    sorteiaPalavra(0, palavras.length - 1)
   }
 
   useEffect(() => {
@@ -80,7 +89,8 @@ const Termo = () => {
 
       {perdedor === true && (
         <div>
-          <h1 className='titulo_termo'>Você perdeu!</h1>
+          <p className='titulo_termo'>Você perdeu!</p>
+          <p className='texto_palavra_revelada'>A palavra era: <b className='palavra_revelada'>{palavra}</b></p>
           <button onClick={resetarJogo} className='botao_enter'>JOGAR NOVAMENTE</button>
         </div>
       )}
@@ -104,11 +114,19 @@ const Termo = () => {
         )
       })}
 
+      {/* <div className='divisao_palavras'>
+            <div className='divisao_palavra'><span className='palavra'></span></div>
+            <div className='divisao_palavra'><span className='palavra'></span></div>
+            <div className='divisao_palavra'><span className='palavra'></span></div>
+            <div className='divisao_palavra'><span className='palavra'></span></div>
+            <div className='divisao_palavra'><span className='palavra'></span></div>
+      </div> */}
+
       {vencedor || perdedor ? (
         <></>
       ) : (
         <form onSubmit={testarPalavra}>
-          <input onChange={digitaPalavra} value={palavraDigitada} onDrop="return false" className='input_palavra' maxLength="5" type="text" />
+          <input onChange={digitaPalavra} value={palavraDigitada} ref={inputPalavra} onDrop="return false" className='input_palavra' maxLength="5" type="text" />
           <button className='botao_enter'>ENTER</button>
         </form>
       )}
