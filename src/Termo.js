@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { palavras } from './palavras';
 
+import Aos from 'aos';
+import 'aos/dist/aos.css';
+
 import confetti from 'https://cdn.skypack.dev/canvas-confetti'
 
 import './Termo.css';
@@ -18,8 +21,8 @@ const Termo = () => {
   const sorteiaPalavra = (min, max) => {
     const numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min
     const palavraSorteada = palavras[numeroAleatorio]
-    const retiraAcento = palavraSorteada.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-    const palavraSeparada = retiraAcento.split("")
+    // const retiraAcento = palavraSorteada.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    const palavraSeparada = palavraSorteada.split("")
     setPalavra(palavraSeparada)
   }
 
@@ -40,6 +43,9 @@ const Termo = () => {
       setVencedor(true)
       confetti()
     }
+    else if (!(palavras.includes(palavraDigitada))) {
+      setPalavraDigitada('')
+    }
     else if (palavrasTentativa.length === 5) {
       setPalavraDigitada('')
       setPerdedor(true)
@@ -58,7 +64,6 @@ const Termo = () => {
 
   const defineClasseDivisao = (caractere, id) => {
     if (caractere === palavra[id]) {
-      console.log(palavra)
       return classesDivisao.correta
     }
     else if (palavra.includes(caractere)) {
@@ -80,6 +85,7 @@ const Termo = () => {
   }
 
   useEffect(() => {
+    Aos.init({ duration: 500 })
     sorteiaPalavra(0, palavras.length - 1)
   }, [])
 
@@ -107,7 +113,7 @@ const Termo = () => {
           <div className='divisao_palavras'>
             {palavras.split('').map((caractere, id) => {
               return (
-                <div key={id} className={`divisao_palavra ${defineClasseDivisao(caractere, id)}`}><span className='palavra'>{caractere}</span></div>
+                <div data-aos='fade-down' key={id} className={`divisao_palavra ${defineClasseDivisao(caractere, id)}`}><span className='palavra'>{caractere}</span></div>
               )
             })}
           </div>
